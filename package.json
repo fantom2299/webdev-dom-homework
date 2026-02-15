@@ -1,0 +1,23 @@
+{
+  "name": "comments-project",
+  "version": "1.0.0",
+  "description": "Проект комментариев с модульной структурой",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write \"**/*.{js,html,css}\"",
+    "format:check": "prettier --check \"**/*.{js,html,css}\"",
+    "lint": "eslint \"**/*.js\"",
+    "lint:fix": "eslint \"**/*.js\" --fix"
+  },
+  "keywords": [
+    "comments",
+    "javascript",
+    "modules"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3"
+  }
+}
