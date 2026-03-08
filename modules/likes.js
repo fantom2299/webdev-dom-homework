@@ -18,6 +18,7 @@ export function toggleLike(commentId) {
     comments[commentIndex].likes += 1;
   }
   comments[commentIndex].isLiked = !comments[commentIndex].isLiked;
+
   renderComments();
 }
 
@@ -30,7 +31,7 @@ export function setupLikeHandlers() {
     const commentId = parseInt(commentElement.dataset.id);
 
     button.addEventListener("click", (e) => {
-      e.stopPropagation(); // Предотвращаем всплытие
+      e.stopPropagation();
       toggleLike(commentId);
     });
   });

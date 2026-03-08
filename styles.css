@@ -163,3 +163,26 @@ body {
 .add-form-button:hover {
   opacity: 0.9;
 }
+
+.loader {
+  padding: 20px;
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+}
+
+.reply-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #888;
+  padding: 0;
+  margin-left: 12px;
+  transition: color 0.15s;
+}
+
+.reply-button:hover {
+  color: #333;
+  text-decoration: underline;
+}

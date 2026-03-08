@@ -1,5 +1,3 @@
-// Модуль данных - хранит исходные комментарии и состояние приложения
-
 export const initialComments = [
   {
     id: 1,
@@ -19,12 +17,10 @@ export const initialComments = [
   },
 ];
 
-// Состояние приложения
 export let comments = [...initialComments];
-export let replyingTo = null;
-export let nextId = 3;
 
-// Функции для изменения состояния
+export let replyingTo = null;
+
 export function setComments(newComments) {
   comments = newComments;
 }
@@ -33,10 +29,6 @@ export function setReplyingTo(value) {
   replyingTo = value;
 }
 
-export function incrementNextId() {
-  return nextId++;
-}
-
-export function getNextId() {
-  return nextId;
+export function clearComments() {
+  comments = [];
 }

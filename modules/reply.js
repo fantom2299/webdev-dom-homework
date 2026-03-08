@@ -1,5 +1,3 @@
-// Модуль функционала ответов на комментарии
-
 import { comments, replyingTo, setReplyingTo } from "./data.js";
 
 // Получаем элементы DOM
@@ -25,14 +23,15 @@ export function setupReply(comment) {
   if (!nameInput.value.trim()) {
     nameInput.value = comment.name;
   }
-
-  // Подставляем текст с упоминанием автора
-  const replyPrefix = `@${comment.name}: ${comment.text}\n\n`;
-  textInput.value = replyPrefix + textInput.value;
+  
+  // Добавляем @ перед именем автора в текст, если нужно
+  if (!textInput.value.includes(`@${comment.name}`)) {
+    const currentText = textInput.value;
+    textInput.value = `@${comment.name}: ${currentText}`;
+  }
 
   // Фокусируемся на текстовом поле
   textInput.focus();
-  textInput.setSelectionRange(replyPrefix.length, replyPrefix.length);
 
   // Показываем индикатор ответа
   showReplyIndicator(comment.name);
@@ -62,23 +61,19 @@ export function cancelReply() {
 }
 
 /**
- * Устанавливает обработчики для клика по комментариям (ответ)
+ * Устанавливает обработчики для кнопок "Ответить"
  */
 export function setupReplyHandlers() {
-  document.querySelectorAll(".comment").forEach((commentElement) => {
-    commentElement.addEventListener("click", (event) => {
-      // Не запускаем ответ при клике на лайк
-      if (event.target.closest(".likes")) {
-        return;
-      }
+  document.querySelectorAll(".reply-button").forEach((button) => {
+    const commentElement = button.closest(".comment");
+    const commentId = parseInt(commentElement.dataset.id);
+    const comment = comments.find((c) => c.id === commentId);
 
-      const commentId = parseInt(commentElement.dataset.id);
-      const comment = comments.find((c) => c.id === commentId);
-
-      if (comment) {
+    if (comment) {
+      button.addEventListener("click", () => {
         setupReply(comment);
-      }
-    });
+      });
+    }
   });
 }
 
