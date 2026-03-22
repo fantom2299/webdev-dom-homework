@@ -21,6 +21,10 @@ export let comments = [...initialComments];
 
 export let replyingTo = null;
 
+export function getComments() {
+  return comments; // <-- добавили
+}
+
 export function setComments(newComments) {
   comments = newComments;
 }

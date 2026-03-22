@@ -1,6 +1,6 @@
 import { sanitizeHTML } from "./utils.js";
 import { postComment } from "./api.js";
-import { loadComments } from "./loadComments.js";
+import { fetchAndRender } from "./loadComments.js";
 import { cancelReply } from "./reply.js";
 
 const nameInput = document.querySelector(".add-form-name");
@@ -27,9 +27,10 @@ export const addComment = async (name, text) => {
 
     cancelReply();
 
-    await loadComments();
+    await fetchAndRender();
 
   } catch (error) {
+    console.error(error);
     alert("Ошибка отправки комментария");
   } finally {
     addButton.disabled = false;

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3001/comments";
+const API_URL = "https://wedev-api.sky.pro/api/v1/nikolay-vasiliev/comments";
 
 export const getComments = async () => {
   const response = await fetch(API_URL);
@@ -13,15 +13,15 @@ export const getComments = async () => {
 export const postComment = async (name, text) => {
   const response = await fetch(API_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ name, text }),
   });
 
+  const data = await response.json(); // читаем один раз
+
   if (!response.ok) {
+    console.log("Ошибка:", data);
     throw new Error("Ошибка отправки комментария");
   }
 
-  return response.json();
+  return data;
 };

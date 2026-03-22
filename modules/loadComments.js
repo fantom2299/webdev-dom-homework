@@ -1,3 +1,4 @@
+// modules/loadComments.js
 import { getComments as fetchFromAPI } from "./api.js";
 import { setComments } from "./data.js";
 import { renderComments } from "./render.js";
@@ -5,7 +6,8 @@ import { renderComments } from "./render.js";
 export const fetchAndRender = async () => {
   try {
     const data = await fetchFromAPI();
-
+    console.log("Ответ API:", data);
+    // Раскомментируй и исправь — было закомментировано!
     const formattedComments = data.comments.map((comment) => ({
       id: comment.id,
       name: comment.author.name,
@@ -15,7 +17,8 @@ export const fetchAndRender = async () => {
       isLiked: false,
     }));
 
-    setComments(formattedComments);
+    const { comments } = await import("./data.js");
+    setComments([...comments, ...formattedComments]);
     renderComments();
   } catch (error) {
     console.error(error);
@@ -23,7 +26,6 @@ export const fetchAndRender = async () => {
   }
 };
 
-// При первом запуске — сначала показываем заглушки, потом данные из API
 export const loadComments = async () => {
   renderComments(); // показываем initialComments сразу
   await fetchAndRender(); // заменяем данными из API

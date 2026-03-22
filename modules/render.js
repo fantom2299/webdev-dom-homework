@@ -1,4 +1,4 @@
-import { comments } from "./data.js";
+import { getComments } from "./data.js"; // <-- изменили импорт
 import { setupLikeHandlers } from "./likes.js";
 import { setupReplyHandlers } from "./reply.js";
 
@@ -21,7 +21,6 @@ export const createCommentHTML = (comment) => {
       <span class="likes-counter">${comment.likes}</span>
       <button class="like-button ${likeClass}"></button>
     </div>
-    
   </div>
 </li>
 `;
@@ -32,7 +31,8 @@ export const renderComments = () => {
 
   container.innerHTML = "";
 
-  comments.forEach((comment) => {
+  getComments().forEach((comment) => {
+    // <-- вместо comments
     container.insertAdjacentHTML("beforeend", createCommentHTML(comment));
   });
 
