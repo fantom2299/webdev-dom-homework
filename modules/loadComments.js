@@ -2,12 +2,19 @@
 import { getComments as fetchFromAPI } from "./api.js";
 import { setComments } from "./data.js";
 import { renderComments } from "./render.js";
+import { showLoading } from "./loading.js";
+
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchAndRender = async () => {
   try {
+
+    showLoading();
+    await sleep(2000);
     const data = await fetchFromAPI();
     console.log("Ответ API:", data);
-    // Раскомментируй и исправь — было закомментировано!
+    
     const formattedComments = data.comments.map((comment) => ({
       id: comment.id,
       name: comment.author.name,

@@ -186,3 +186,31 @@ body {
   color: #333;
   text-decoration: underline;
 }
+
+.like-button {
+  transition: transform 0.2s ease;
+}
+
+/* Прыжок при постановке лайка */
+.like-button.-active-like {
+  animation: jump 0.4s ease;
+}
+
+/* Встряска при снятии лайка */
+.like-button.shake {
+  animation: shake 0.3s ease;
+}
+
+@keyframes jump {
+  0%   { transform: scale(1) rotate(0deg); }
+  30%  { transform: scale(1.5) rotate(-10deg); }
+  60%  { transform: scale(0.9) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  75%  { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}

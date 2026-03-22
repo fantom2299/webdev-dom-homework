@@ -2,6 +2,7 @@ import { sanitizeHTML } from "./utils.js";
 import { postComment } from "./api.js";
 import { fetchAndRender } from "./loadComments.js";
 import { cancelReply } from "./reply.js";
+import { showLoadingBottom } from "./loading.js";
 
 const nameInput = document.querySelector(".add-form-name");
 const textInput = document.querySelector(".add-form-text");
@@ -16,6 +17,8 @@ export const addComment = async (name, text) => {
   const safeName = sanitizeHTML(name.trim());
   const safeText = sanitizeHTML(text.trim());
 
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   try {
     addButton.disabled = true;
     addButton.textContent = "Отправка...";
@@ -27,6 +30,8 @@ export const addComment = async (name, text) => {
 
     cancelReply();
 
+    showLoadingBottom();
+    await sleep(4000);
     await fetchAndRender();
 
   } catch (error) {
