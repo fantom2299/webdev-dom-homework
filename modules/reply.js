@@ -12,7 +12,7 @@ const textInput = document.querySelector(".add-form-text");
  * @param {Object} comment - комментарий, на который отвечаем
  */
 export function setupReply(comment) {
-  // Сохраняем информацию о комментарии, на который отвечаем
+  
   setReplyingTo({
     id: comment.id,
     name: comment.name,

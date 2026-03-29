@@ -1,20 +1,16 @@
-// modules/loadComments.js
 import { getComments as fetchFromAPI } from "./api.js";
-import { setComments } from "./data.js";
+import { setComments, initialComments } from "./data.js";
 import { renderComments } from "./render.js";
 import { showLoading } from "./loading.js";
 
-
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// Только загружает данные с API и рендерит — без лоадера вверху
 export const fetchAndRender = async () => {
   try {
-
-    showLoading();
-    await sleep(2000);
     const data = await fetchFromAPI();
     console.log("Ответ API:", data);
-    
+
     const formattedComments = data.comments.map((comment) => ({
       id: comment.id,
       name: comment.author.name,
@@ -24,8 +20,8 @@ export const fetchAndRender = async () => {
       isLiked: false,
     }));
 
-    const { comments } = await import("./data.js");
-    setComments([...comments, ...formattedComments]);
+    // initialComments всегда первые, потом API-комментарии
+    setComments([...initialComments, ...formattedComments]);
     renderComments();
   } catch (error) {
     console.error(error);
@@ -33,7 +29,9 @@ export const fetchAndRender = async () => {
   }
 };
 
+// Только при первой загрузке страницы показываем лоадер вверху
 export const loadComments = async () => {
-  renderComments(); // показываем initialComments сразу
-  await fetchAndRender(); // заменяем данными из API
+  showLoading();
+  await sleep(2000);
+  await fetchAndRender();
 };
