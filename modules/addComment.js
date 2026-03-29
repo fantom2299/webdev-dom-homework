@@ -8,11 +8,23 @@ const nameInput = document.querySelector(".add-form-name");
 const textInput = document.querySelector(".add-form-text");
 const addButton = document.querySelector(".add-form-button");
 
-export const addComment = async (name, text) => {
-  if (!name.trim() || !text.trim()) {
-    alert("Заполните все поля");
-    return;
+// Валидация полей
+const validate = (name, text) => {
+  if (name.trim().length < 3) {
+    alert("Имя должно содержать минимум 3 символа");
+    return false;
   }
+
+  if (text.trim().length < 3) {
+    alert("Комментарий должен содержать минимум 3 символа");
+    return false;
+  }
+
+  return true;
+};
+
+export const addComment = async (name, text) => {
+  if (!validate(name, text)) return;
 
   const safeName = sanitizeHTML(name.trim());
   const safeText = sanitizeHTML(text.trim());
@@ -33,10 +45,9 @@ export const addComment = async (name, text) => {
     showLoadingBottom();
     await sleep(4000);
     await fetchAndRender();
-
   } catch (error) {
     console.error(error);
-    alert("Ошибка отправки комментария");
+    alert("Нет соединения с интернетом. Повторите попытку позже.");
   } finally {
     addButton.disabled = false;
     addButton.textContent = "Написать";

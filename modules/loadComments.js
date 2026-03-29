@@ -20,6 +20,8 @@ export const fetchAndRender = async () => {
       isLiked: false,
     }));
 
+    
+
     // initialComments всегда первые, потом API-комментарии
     setComments([...initialComments, ...formattedComments]);
     renderComments();
