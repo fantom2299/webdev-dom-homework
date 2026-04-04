@@ -2,11 +2,19 @@ import { sanitizeHTML } from "./utils.js";
 import { postComment } from "./api.js";
 import { fetchAndRender } from "./loadComments.js";
 import { cancelReply } from "./reply.js";
-import { showLoadingBottom } from "./loading.js";
+
 
 const nameInput = document.querySelector(".add-form-name");
 const textInput = document.querySelector(".add-form-text");
 const addButton = document.querySelector(".add-form-button");
+const addForm = document.querySelector(".add-form");
+
+// Надпись "Комментарий добавляется"
+const addingLabel = document.createElement("p");
+addingLabel.classList.add("adding-label");
+addingLabel.textContent = "Комментарий добавляется...";
+addForm.after(addingLabel);
+addingLabel.style.display = "none";
 
 // Валидация полей
 const validate = (name, text) => {
@@ -32,8 +40,9 @@ export const addComment = async (name, text) => {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   try {
-    addButton.disabled = true;
-    addButton.textContent = "Отправка...";
+    // Скрываем форму, показываем надпись
+    addForm.style.display = "none";
+    addingLabel.style.display = "block";
 
     await postComment(safeName, safeText);
 
@@ -42,13 +51,16 @@ export const addComment = async (name, text) => {
 
     cancelReply();
 
-    showLoadingBottom();
+    // showLoadingBottom();
     await sleep(4000);
     await fetchAndRender();
   } catch (error) {
     console.error(error);
     alert("Нет соединения с интернетом. Повторите попытку позже.");
   } finally {
+    // Показываем форму обратно, скрываем надпись
+    addForm.style.display = "flex";
+    addingLabel.style.display = "none";
     addButton.disabled = false;
     addButton.textContent = "Написать";
   }
