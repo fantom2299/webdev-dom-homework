@@ -1,40 +1,28 @@
 import { getComments } from "./data.js";
-import { renderComments } from "./render.js";
 
-/**
- * Переключает состояние лайка для комментария
- * @param {number} commentId - ID комментария
- */
-export function toggleLike(commentId) {
+export function updateCommentLike(commentId, data) {
   const comments = getComments();
   const commentIndex = comments.findIndex((c) => c.id === commentId);
 
   if (commentIndex === -1) return;
 
-  if (comments[commentIndex].isLiked) {
-    comments[commentIndex].likes -= 1;
-  } else {
-    comments[commentIndex].likes += 1;
-  }
-  comments[commentIndex].isLiked = !comments[commentIndex].isLiked;
-  renderComments();
+  comments[commentIndex].likes = data.likes;
+  comments[commentIndex].isLiked = data.isLiked;
 }
 
 export const setupLikeHandlers = () => {
   const likeButtons = document.querySelectorAll(".like-button");
 
   likeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      // Берём ID комментария из родительского <li data-id="...">
-      const commentId = Number(button.closest(".comment").dataset.id);
+    button.addEventListener("click", async () => {
+      const commentElement = button.closest(".comment");
+      const commentId = Number(commentElement.dataset.id);
 
       const isLiked = button.classList.contains("-active-like");
 
       if (isLiked) {
-        // Снимаем лайк — встряска
         button.classList.remove("-active-like");
         button.classList.add("shake");
-
         button.addEventListener(
           "animationend",
           () => {
@@ -43,12 +31,23 @@ export const setupLikeHandlers = () => {
           { once: true }
         );
       } else {
-        // Ставим лайк — прыжок
         button.classList.add("-active-like");
       }
 
-      // Обновляем данные и перерисовываем счётчик
-      toggleLike(commentId);
+      try {
+        const response = await import("./api.js");
+        const data = await response.toggleLike(commentId);
+        updateCommentLike(commentId, data);
+
+        const counter = button.parentElement.querySelector(".likes-counter");
+        if (counter) {
+          counter.textContent = data.likes;
+        }
+      } catch (error) {
+        console.error(error);
+        button.classList.toggle("active-like");
+        alert("Не удалось обновить лайк");
+      }
     });
   });
 };

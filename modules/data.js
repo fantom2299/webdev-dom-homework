@@ -17,16 +17,28 @@ export const initialComments = [
   },
 ];
 
-export let comments = [...initialComments];
-
-export let replyingTo = null;
+let comments = [...initialComments];
+let replyingTo = null;
+let initialLoaded = false;
 
 export function getComments() {
-  return comments; // <-- добавили
+  return comments;
 }
 
 export function setComments(newComments) {
   comments = newComments;
+}
+
+export function isInitialLoaded() {
+  return initialLoaded;
+}
+
+export function setInitialLoaded(value) {
+  initialLoaded = value;
+}
+
+export function getReplyingTo() {
+  return replyingTo;
 }
 
 export function setReplyingTo(value) {
@@ -35,4 +47,5 @@ export function setReplyingTo(value) {
 
 export function clearComments() {
   comments = [];
+  initialLoaded = false;
 }
